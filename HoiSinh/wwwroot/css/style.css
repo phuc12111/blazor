@@ -1,0 +1,34 @@
+﻿.container {
+    margin: 20px;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    width: 200px; /* Chiều rộng của khung */
+    height: 80px; /* Chiều cao của khung */
+}
+
+.image {
+    flex: 1;
+    margin-top: 3px;
+}
+
+    .image img {
+        width: 100%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng của phần tử */
+    }
+
+.content {
+    flex: 2;
+    padding: 10px; /* Padding bên trong phần nội dung */
+    box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước của phần tử */
+}
+
+.text-above {
+    margin-bottom: 5px; /* Margin giữa các phần tử nội dung */
+    font-weight: bold;
+}
+
+.text-below {
+    font-style: italic;
+    font-size: 25px;
+}

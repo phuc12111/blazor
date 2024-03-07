@@ -1,0 +1,121 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\HoiSinh.bundle.scp.css",
+      "PackagePath": "staticwebassets\\HoiSinh.bundle.scp.css"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "PackagePath": "staticwebassets\\css\\open-iconic"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "PackagePath": "staticwebassets\\css\\open-iconic"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\css\\open-iconic\\README.md",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\README.md"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\css\\style.css",
+      "PackagePath": "staticwebassets\\css\\style.css"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\img\\bmi.jpg",
+      "PackagePath": "staticwebassets\\img\\bmi.jpg"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\img\\cannang.png",
+      "PackagePath": "staticwebassets\\img\\cannang.png"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\img\\chieucao.jpg",
+      "PackagePath": "staticwebassets\\img\\chieucao.jpg"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\img\\huyetap.jpg",
+      "PackagePath": "staticwebassets\\img\\huyetap.jpg"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\img\\mach.jpg",
+      "PackagePath": "staticwebassets\\img\\mach.jpg"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\img\\nhietdo.jpg",
+      "PackagePath": "staticwebassets\\img\\nhietdo.jpg"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\img\\nhiptho.jpg",
+      "PackagePath": "staticwebassets\\img\\nhiptho.jpg"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\img\\nhommau.png",
+      "PackagePath": "staticwebassets\\img\\nhommau.png"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\img\\spo2.png",
+      "PackagePath": "staticwebassets\\img\\spo2.png"
+    },
+    {
+      "Id": "D:\\HoiSinh\\HoiSinh\\wwwroot\\img\\vte.jpg",
+      "PackagePath": "staticwebassets\\img\\vte.jpg"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.HoiSinh.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.HoiSinh.props",
+      "PackagePath": "build\\HoiSinh.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.HoiSinh.props",
+      "PackagePath": "buildMultiTargeting\\HoiSinh.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.HoiSinh.props",
+      "PackagePath": "buildTransitive\\HoiSinh.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

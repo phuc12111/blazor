@@ -1,0 +1,410 @@
+﻿@page "/product"
+@using System.Net.Http
+@using Newtonsoft.Json
+@using System.Net.Http.Headers
+@using System.Collections.Generic
+@using System.Linq
+@using System.Threading.Tasks
+@inject IJSRuntime JSRuntime
+
+
+<h3>Danh sách tất cả sinh hiệu </h3>
+@if (BenhAn != null && BenhAn.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tên </th>
+                <th>Giá trị</th>
+                <th>Đơn vị</th>
+                <th>Trạng Thái</th>
+                <th>phòng</th>
+                <th>Người yêu cầu</th>
+                <th>Người thực hiện </th>
+                <th>Ngày nhập </th>
+                <th>Ghi chú</th>
+                <th>sua</th>
+                <th>xoa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in BenhAn)
+            {
+                <tr>
+                    <td>@item.DisplayBS</td>
+                    <td>@item.Display</td>
+                    <td>@item.Unit</td>
+                    <td>@item.Status</td>
+                    <td>@item.Location</td>
+                    <td>@item.Requester</td>
+                    <td>@item.Performer</td>
+                    <td>@item.Authored</td>
+                    <td>@item.Note</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => ShowUpdateModal(item.Id, item.Seq, item.Unit)">Update</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" @onclick="() => ConfirmDelete(item.Id, item.Seq, item.Unit)">Delete</button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Không có dữ liệu sản phẩm hoặc dự án được tìm thấy.</p>
+}
+
+<!-- Modal -->
+<div class="modal" id="updateModal" tabindex="-1" role="dialog" style="display:@(IsUpdateModalVisible ? "block" : "none");">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cập nhật dữ liệu</h5>
+                <button type="button" class="close" @onclick="HideUpdateModal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label for="newValue">New Value:</label>
+                <input type="text" id="newValue" @bind="NewValue" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="HideUpdateModal">Cancel</button>
+                <button type="button" class="btn btn-primary" @onclick="UpdateData">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<Benh> Benhs;
+    private List<BacSi> BacSis;
+    private List<Item> BenhAn;
+    private string benhApiUrl = "http://14.241.182.251:59325/api/dashboard/medical/signals/W3siY29kZSI6ImVuY291bnRlciIsInZhbHVlIjoiMjQwMDA0MDIifV0=";
+    private string bsApiUrl = "http://14.241.182.251:59325/api/observation/signal/eyJ0eXBlIjoiYWxsIiwiZW5jb3VudGVyIjoiMjQwMDA0MDIifQ==";
+    private string Token = "FV0pJclr75laKx/PEkYYF4kZaGxwEfsxTh+W6IPBVJAvIcE1J0gE/BEEMt16hHzkJ1ouLds10mB+v+ou8w7q4Zp5GeHUFcJpResHiwCfmjLDS1TrMVaKl0NWgHac7VgiiAVmP0LdhFua7CPIDK6LJSkxI+IYs8VllLGUq78mPrvcReSAqG70q8zJJPYRpe9kwjsAfwUo6ijwa3of7IkIn1vr27021U5gNwamJIwHQyRz6WGmNCldw7WdlBWGvCcdOvtcoLHic/TQ2f/rr5sqxI8RrVaYAXUM/qILaxKwVUhstaoZFM4J39ldA/aEuyLhpn1Cknv300HFg8nPCDOHQg==";
+    private string ErrorMessage;
+    private string NewValue;
+    private bool IsUpdateModalVisible = false;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+    private string UpdateId;
+    private string UpdateSeq;
+    private string UpdateUnit;
+
+    private async Task ShowUpdateModal(string id, string seq, string unit)
+    {
+        try
+        {
+            NewValue = ""; // Reset NewValue
+            IsUpdateModalVisible = true;
+            UpdateId = id;
+            UpdateSeq = seq;
+            UpdateUnit = unit;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Lỗi: " + ex.Message);
+        }
+    }
+
+
+    private void HideUpdateModal()
+    {
+        IsUpdateModalVisible = false;
+    }
+
+    private async Task UpdateData()
+    {
+        try
+        {
+            var apiUrl = "http://14.241.182.251:59325/api/observation/signal";
+
+            var requestData = new
+            {
+                data = new
+                {
+                    type = "edit",
+                    code = UpdateId,
+                    seq = UpdateSeq,
+                    value = NewValue,
+                    value_string = "",
+                    unit = UpdateUnit,
+                    encounter = 24000402 // Điều kiện cụ thể của bạn
+                },
+                token = Token,
+                ip = "192:168:1:18",
+                code = "ad568891-dbc4-4241-a122-abb127901972"
+            };
+
+            var jsonContent = JsonConvert.SerializeObject(requestData);
+            var content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
+
+            using (var client = new HttpClient())
+            {
+                var request = new HttpRequestMessage(HttpMethod.Put, apiUrl);
+                request.Content = content;
+
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+
+                // Nếu cập nhật thành công, cập nhật lại danh sách sản phẩm
+                await LoadBenhAsync();
+                await LoadBacSiAsync();
+                CombineBenhAnData();
+            }
+
+            IsUpdateModalVisible = false; // Ẩn modal sau khi cập nhật thành công
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Lỗi: " + ex.Message);
+        }
+    }
+
+
+
+
+
+
+    private async Task Delete(string id, string seq, string note)
+    {
+        try
+        {
+            var apiUrl = $"http://14.241.182.251:59325/api/observation/signal";
+
+            var requestData = new
+            {
+                data = new
+                {
+                    type = "cancel",
+                    code = id,
+                    seq = seq, // Sử dụng seq tương ứng
+                    encounter = "24000402", // Điều kiện cụ thể của bạn
+                    note = note // Sử dụng note tương ứng
+                },
+                token = "FV0pJclr75laKx/PEkYYF4kZaGxwEfsxTh+W6IPBVJAvIcE1J0gE/BEEMt16hHzkJ1ouLds10mB+v+ou8w7q4Zp5GeHUFcJpResHiwCfmjLDS1TrMVaKl0NWgHac7VgiiAVmP0LdhFua7CPIDK6LJSkxI+IYs8VllLGUq78mPrvcReSAqG70q8zJJPYRpe9kwjsAfwUo6ijwa3of7IkIn1vr27021U5gNwamJIwHQyRz6WGmNCldw7WdlBWGvCcdOvtcoLHic/TQ2f/rr5sqxI8RrVaYAXUM/qILaxKwVUhstaoZFM4J39ldA/aEuyLhpn1Cknv300HFg8nPCDOHQg==",
+                ip = "192:168:1:18",
+                code = "ad568891-dbc4-4241-a122-abb127901972"
+            };
+
+            var jsonContent = JsonConvert.SerializeObject(requestData);
+            var content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
+
+            using (var client = new HttpClient())
+            {
+                var request = new HttpRequestMessage(HttpMethod.Put, apiUrl);
+                request.Headers.Add("token", Token);
+                request.Content = content;
+
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+
+                // Nếu xóa thành công, cập nhật lại danh sách sản phẩm
+                await LoadBenhAsync();
+                await LoadBacSiAsync();
+                CombineBenhAnData();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+    }
+
+
+
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadBenhAsync();
+        await LoadBacSiAsync();
+        CombineBenhAnData();
+    }
+    private async Task ConfirmDelete(string id, string seq, string note)
+    {
+        if (await JSRuntime.InvokeAsync<bool>("confirm", new object[] { $"Bạn có chắc chắn muốn xóa mục này không?" }))
+        {
+            await Delete(id, seq, note);
+        }
+    }
+
+    private async Task LoadBenhAsync()
+    {
+        try
+        {
+            using (var client = new HttpClient())
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, benhApiUrl);
+                request.Headers.Add("token", Token);
+
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var apiResult = JsonConvert.DeserializeObject<ApiResult<List<Benh>>>(jsonString);
+
+                if (apiResult.Status == "success")
+                {
+                    Benhs = apiResult.Value;
+                }
+                else
+                {
+                    ErrorMessage = $"Lỗi API: {apiResult.Message}";
+                    Console.WriteLine(ErrorMessage);
+                }
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            ErrorMessage = $"Lỗi Yêu Cầu HTTP: {ex.Message}";
+            Console.WriteLine(ErrorMessage);
+        }
+        catch (JsonException ex)
+        {
+            ErrorMessage = $"Lỗi Deserialization JSON: {ex.Message}";
+            Console.WriteLine(ErrorMessage);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Lỗi Không Xác Định: {ex.Message}";
+            Console.WriteLine(ErrorMessage);
+        }
+    }
+
+
+    private async Task LoadBacSiAsync()
+    {
+        try
+        {
+            using (var client = new HttpClient())
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, bsApiUrl);
+                request.Headers.Add("token", Token);
+
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var apiResult = JsonConvert.DeserializeObject<ApiResult<List<BacSi>>>(jsonString);
+
+                if (apiResult.Status == "success")
+                {
+                    BacSis = apiResult.Value;
+                }
+                else
+                {
+                    ErrorMessage = $"Lỗi API: {apiResult.Message}";
+                    Console.WriteLine(ErrorMessage);
+                }
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            ErrorMessage = $"Lỗi Yêu Cầu HTTP: {ex.Message}";
+            Console.WriteLine(ErrorMessage);
+        }
+        catch (JsonException ex)
+        {
+            ErrorMessage = $"Lỗi Deserialization JSON: {ex.Message}";
+            Console.WriteLine(ErrorMessage);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Lỗi Không Xác Định: {ex.Message}";
+            Console.WriteLine(ErrorMessage);
+        }
+    }
+
+
+    private void CombineBenhAnData()
+    {
+        BenhAn = new List<Item>();
+
+        if (Benhs != null)
+        {
+            BenhAn.AddRange(Benhs.Select(be => new Item
+                {
+                    Code = be.Code,
+                    Display = be.Display,
+                    Performer = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Performer,
+                    Id = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Id,
+                    Seq = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Seq,
+                    Note = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Note,
+                    Unit_root = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Unit_root,
+                    Status = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Status,
+                    Authored = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Authored,
+                    Organization = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Organization,
+                    Value_string = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Value_string,
+                    Unit = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Unit,
+                    DisplayBS = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Display,
+                    Location = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Location,
+
+                }));
+        }
+
+    }
+
+
+
+    public class Item
+    {
+        public string Code { get; set; }
+        public string Display { get; set; }
+        public string Id { get; set; }
+        public string Seq { get; set; }
+        public string Note { get; set; }
+        public string Unit { get; set; }
+        public string Status { get; set; }
+        public string DisplayBS { get; set; }
+        public string Authored { get; set; }
+        public string Location { get; set; }
+        public string Performer { get; set; }
+        public string Requester { get; set; }
+        public string Unit_root { get; set; }
+        public string Organization { get; set; }
+        public string Value_string { get; set; }
+    }
+
+    public class Benh
+    {
+        public string Code { get; set; }
+        public string Display { get; set; }
+    }
+
+    public class BacSi
+    {
+        public string Id { get; set; }
+        public string Seq { get; set; }
+        public string Code { get; set; }
+        public string Note { get; set; }
+        public string Unit { get; set; }
+        public string Status { get; set; }
+        public string Display { get; set; }
+        public string Authored { get; set; }
+        public string Location { get; set; }
+        public string Performer { get; set; }
+        public string Requester { get; set; }
+        public string Unit_root { get; set; }
+        public string Organization { get; set; }
+        public string Value_string { get; set; }
+    }
+
+
+    public class ApiResult<T>
+    {
+        public string Code { get; set; }
+        public string Type { get; set; }
+        public string Hints { get; set; }
+        public T Value { get; set; }
+        public string Status { get; set; }
+        public string Message { get; set; }
+    }
+}

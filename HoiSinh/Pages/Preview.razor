@@ -1,0 +1,148 @@
+﻿@page "/Preview"
+@using System.Net.Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+
+<h1>Preview</h1>
+
+@if (signals != null)
+{
+
+    @foreach (var signal in signals.value)
+    {
+        <div class="container">
+            <div class="image">
+                <img src="@GetSignalImage(signal.code)" alt="Signal Image" width="50" height="50">
+            </div>
+            <div class="content">
+                <div class="text-above">@GetSignalName(signal.code)</div>
+                <div class="text-below">@signal.display</div>
+            </div>
+        </div>
+
+    }
+    @if (!string.IsNullOrEmpty(bmi))
+    {
+        <div class="container">
+            <div class="image">
+                <img src="img/nhommau.png" alt="Signal Image" width="50" height="50">
+            </div>
+            <div class="content">
+                <div class="text-above">BMI</div>
+                <div class="text-below">@bmi</div>
+            </div>
+        </div>
+    }
+    <div class="container">
+        <div class="image">
+            <img src="img/vte.jpg" alt="Image">
+        </div>
+        <div class="content">
+            <div class="text-above">VTE</div>
+            <div class="text-below"></div>
+        </div>
+    </div>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    private ApiResponse signals;
+    private string bmi;
+    private HttpClient httpClient = new HttpClient();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchData();
+    }
+
+    private async Task FetchData()
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, "http://14.241.182.251:59325/api/dashboard/medical/signals/W3siY29kZSI6ImVuY291bnRlciIsInZhbHVlIjoiMjQwMDA0MDIifV0=");
+        request.Headers.Add("token", "FV0pJclr75laKx/PEkYYF4kZaGxwEfsxTh+W6IPBVJAvIcE1J0gE/BEEMt16hHzkJ1ouLds10mB+v+ou8w7q4Zp5GeHUFcJpResHiwCfmjLDS1TrMVaKl0NWgHac7VgiiAVmP0LdhFua7CPIDK6LJSkxI+IYs8VllLGUq78mPrvcReSAqG70q8zJJPYRpe9kwjsAfwUo6ijwa3of7IkIn1vr27021U5gNwamJIwHQyRz6WGmNCldw7WdlBWGvCcdOvtcoLHic/TQ2f/rr5sqxI8RrVaYAXUM/qILaxKwVUhstaoZFM4J39ldA/aEuyLhpn1Cknv300HFg8nPCDOHQg==");
+
+        var response = await httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+        signals = await response.Content.ReadFromJsonAsync<ApiResponse>();
+
+        if (signals != null)
+        {
+            var weightSignal = signals.value?.FirstOrDefault(signal => signal.code == "SIG_06");
+            var heightSignal = signals.value?.FirstOrDefault(signal => signal.code == "SIG_08");
+
+            if (weightSignal != null && heightSignal != null)
+            {
+                var weightStr = weightSignal.display.Split()[0];
+                var heightStr = heightSignal.display.Split()[0];
+
+                if (float.TryParse(weightStr, out float weight) && float.TryParse(heightStr, out float height))
+                {
+                    CalculateBMI(weight, height / 100);
+                }
+            }
+        }
+    }
+
+    private void CalculateBMI(float weight, float height)
+    {
+        float bmiFloat = weight / (height * height);
+        bmi = (Math.Ceiling(bmiFloat * 100) / 100).ToString(); 
+    }
+
+    private Dictionary<string, string> signalNames = new Dictionary<string, string>()
+{
+    { "SIG_01", "huyet ap" },
+    { "SIG_02", "mach" },
+    { "SIG_03", "nhiet do" },
+    { "SIG_04", "spo2" },
+    { "SIG_05", "nhip tho" },
+    { "SIG_06", "can nang" },
+    { "SIG_08", "chieu cao" },
+    { "SIG_10", "nhom mau" },
+
+    { "default", "conlai" }
+};
+
+    private Dictionary<string, string> signalImages = new Dictionary<string, string>()
+{
+    { "SIG_01", "img/huyetap.jpg" },
+    { "SIG_02", "img/mach.jpg" },
+    { "SIG_03", "img/nhietdo.jpg" },
+    { "SIG_04", "img/spo2.png" },
+    { "SIG_05", "img/nhiptho.jpg" },
+    { "SIG_06", "img/cannang.png" },
+    { "SIG_08", "img/chieucao.jpg" },
+    { "SIG_10", "img/nhommau.png" },
+
+    { "default", "img/nhommau.png" }
+};
+
+    private string GetSignalName(string code)
+    {
+        return signalNames.ContainsKey(code) ? signalNames[code] : signalNames["default"];
+    }
+
+    private string GetSignalImage(string code)
+    {
+        return signalImages.ContainsKey(code) ? signalImages[code] : signalImages["default"];
+    }
+
+
+    class ApiResponse
+    {
+        public string code { get; set; }
+        public string type { get; set; }
+        public string hints { get; set; }
+        public List<Signal> value { get; set; }
+        public string status { get; set; }
+        public string message { get; set; }
+    }
+
+    class Signal
+    {
+        public string code { get; set; }
+        public string display { get; set; }
+    }
+}
