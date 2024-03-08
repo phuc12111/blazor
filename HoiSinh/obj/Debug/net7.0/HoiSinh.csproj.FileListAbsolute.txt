@@ -32,3 +32,4 @@ D:\HoiSinh\HoiSinh\obj\Debug\net7.0\refint\HoiSinh.dll
 D:\HoiSinh\HoiSinh\obj\Debug\net7.0\HoiSinh.pdb
 D:\HoiSinh\HoiSinh\obj\Debug\net7.0\HoiSinh.genruntimeconfig.cache
 D:\HoiSinh\HoiSinh\obj\Debug\net7.0\ref\HoiSinh.dll
+D:\HoiSinh\HoiSinh\obj\Debug\net7.0\HoiSinh.sourcelink.json
