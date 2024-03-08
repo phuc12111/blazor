@@ -57,7 +57,7 @@ else
     <p>Không có dữ liệu sản phẩm hoặc dự án được tìm thấy.</p>
 }
 
-<!-- Modal -->
+
 <div class="modal" id="updateModal" tabindex="-1" role="dialog" style="display:@(IsUpdateModalVisible ? "block" : "none");">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -100,7 +100,7 @@ else
     {
         try
         {
-            NewValue = ""; // Reset NewValue
+            NewValue = ""; 
             IsUpdateModalVisible = true;
             UpdateId = id;
             UpdateSeq = seq;
