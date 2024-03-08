@@ -33,3 +33,10 @@ D:\HoiSinh\HoiSinh\obj\Debug\net7.0\HoiSinh.pdb
 D:\HoiSinh\HoiSinh\obj\Debug\net7.0\HoiSinh.genruntimeconfig.cache
 D:\HoiSinh\HoiSinh\obj\Debug\net7.0\ref\HoiSinh.dll
 D:\HoiSinh\HoiSinh\obj\Debug\net7.0\HoiSinh.sourcelink.json
+D:\HoiSinh\HoiSinh\bin\Debug\net7.0\Microsoft.AspNetCore.Authorization.dll
+D:\HoiSinh\HoiSinh\bin\Debug\net7.0\Microsoft.AspNetCore.Components.dll
+D:\HoiSinh\HoiSinh\bin\Debug\net7.0\Microsoft.AspNetCore.Metadata.dll
+D:\HoiSinh\HoiSinh\bin\Debug\net7.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\HoiSinh\HoiSinh\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
+D:\HoiSinh\HoiSinh\bin\Debug\net7.0\Radzen.Blazor.dll
+D:\HoiSinh\HoiSinh\bin\Debug\net7.0\System.Linq.Dynamic.Core.dll

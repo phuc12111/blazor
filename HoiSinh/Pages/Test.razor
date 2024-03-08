@@ -1,0 +1,37 @@
+﻿@page "/pro"
+@using System.Collections.Generic
+
+<h3>Danh sách Học sinh</h3>
+
+<RadzenDataGrid Data="@students" TItem="Student" AllowPaging="true" PageSize="10">
+    <Columns>
+        <RadzenDataGridColumn TItem="Student" Property="StudentID" Title="ID" />
+        <RadzenDataGridColumn TItem="Student" Property="StudentName" Title="Tên Học sinh" />
+        <RadzenDataGridColumn TItem="Student" Property="Age" Title="Tuổi" />
+        <RadzenDataGridColumn TItem="Student" Property="Grade" Title="Lớp" />
+    </Columns>
+</RadzenDataGrid>
+
+@code {
+    List<Student> students;
+
+    protected override void OnInitialized()
+    {
+        students = new List<Student>
+        {
+            new Student { StudentID = 1, StudentName = "Nguyễn Văn A", Age = 15, Grade = "10A" },
+            new Student { StudentID = 2, StudentName = "Trần Thị B", Age = 16, Grade = "10B" },
+            new Student { StudentID = 3, StudentName = "Lê Văn C", Age = 15, Grade = "10A" },
+            new Student { StudentID = 4, StudentName = "Phạm Thị D", Age = 16, Grade = "10B" },
+            new Student { StudentID = 5, StudentName = "Hoàng Văn E", Age = 15, Grade = "10A" }
+        };
+    }
+    public class Student
+{
+    public int StudentID { get; set; }
+    public string StudentName { get; set; }
+    public int Age { get; set; }
+    public string Grade { get; set; }
+}
+}
+

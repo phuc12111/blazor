@@ -11,51 +11,35 @@
 <h3>Danh sách tất cả sinh hiệu </h3>
 @if (BenhAn != null && BenhAn.Any())
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Tên </th>
-                <th>Giá trị</th>
-                <th>Đơn vị</th>
-                <th>Trạng Thái</th>
-                <th>phòng</th>
-                <th>Người yêu cầu</th>
-                <th>Người thực hiện </th>
-                <th>Ngày nhập </th>
-                <th>Ghi chú</th>
-                <th>sua</th>
-                <th>xoa</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in BenhAn)
-            {
-                <tr>
-                    <td>@item.DisplayBS</td>
-                    <td>@item.Value_string</td>
-                    <td>@item.Unit</td>
-                    <td>@item.Status</td>
-                    <td>@item.Location</td>
-                    <td>@item.Requester</td>
-                    <td>@item.Performer</td>
-                    <td>@item.Authored</td>
-                    <td>@item.Note</td>
-                    <td>
-                        <button class="btn btn-primary" @onclick="() => ShowUpdateModal(item.Id, item.Seq, item.Unit)">Sửa</button>
-                    </td>
-                    <td>
-                        <button class="btn btn-danger" @onclick="() => ConfirmDelete(item.Id, item.Seq, item.Unit)">Xóa</button>
-                    </td>
-                </tr>
-            }
-
-        </tbody>
-    </table>
+    <RadzenDataGrid Data="@BenhAn" TItem="Item" AllowPaging="true" PageSize="10">
+        <Columns>
+            <RadzenDataGridColumn TItem="Item" Property="DisplayBS" Title="Tên" />
+            <RadzenDataGridColumn TItem="Item" Property="Value_string" Title="Giá trị" />
+            <RadzenDataGridColumn TItem="Item" Property="Unit" Title="Đơn vị" />
+            <RadzenDataGridColumn TItem="Item" Property="Status" Title="Trạng thái" />
+            <RadzenDataGridColumn TItem="Item" Property="Location" Title="Phòng" />
+            <RadzenDataGridColumn TItem="Item" Property="Requester" Title="Người yêu cầu" />
+            <RadzenDataGridColumn TItem="Item" Property="Performer" Title="Người thực hiện" />
+            <RadzenDataGridColumn TItem="Item" Property="Authored" Title="Ngày nhập" />
+            <RadzenDataGridColumn TItem="Item" Property="Note" Title="Ghi chú" />
+            <RadzenDataGridColumn TItem="Item" Property="Id" Title="Sửa">
+                <Template Context="item">
+                    <button class="btn btn-primary" @onclick="() => ShowUpdateModal(item.Code, item.Seq, item.Unit)">Sửa</button>
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Item" Property="Id" Title="Xóa">
+                <Template Context="item">
+                    <button class="btn btn-danger" @onclick="() => ConfirmDelete(item.Code, item.Seq, item.Unit)">Xóa</button>
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
 }
 else
 {
     <p>Không có dữ liệu sản phẩm hoặc dự án được tìm thấy.</p>
 }
+
 
 
 <div class="modal" id="updateModal" tabindex="-1" role="dialog" style="display:@(IsUpdateModalVisible ? "block" : "none");">
@@ -183,9 +167,9 @@ else
                 {
                     type = "cancel",
                     code = id,
-                    seq = seq, // Sử dụng seq tương ứng
-                    encounter = "24000402", // Điều kiện cụ thể của bạn
-                    note = note // Sử dụng note tương ứng
+                    seq = seq, 
+                    encounter = "24000402", 
+                    note = note 
                 },
                 token = "FV0pJclr75laKx/PEkYYF4kZaGxwEfsxTh+W6IPBVJAvIcE1J0gE/BEEMt16hHzkJ1ouLds10mB+v+ou8w7q4Zp5GeHUFcJpResHiwCfmjLDS1TrMVaKl0NWgHac7VgiiAVmP0LdhFua7CPIDK6LJSkxI+IYs8VllLGUq78mPrvcReSAqG70q8zJJPYRpe9kwjsAfwUo6ijwa3of7IkIn1vr27021U5gNwamJIwHQyRz6WGmNCldw7WdlBWGvCcdOvtcoLHic/TQ2f/rr5sqxI8RrVaYAXUM/qILaxKwVUhstaoZFM4J39ldA/aEuyLhpn1Cknv300HFg8nPCDOHQg==",
                 ip = "192:168:1:18",
@@ -204,7 +188,7 @@ else
                 var response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
 
-                // Nếu xóa thành công, cập nhật lại danh sách sản phẩm
+                
                 await LoadBenhAsync();
                 await LoadBacSiAsync();
                 CombineBenhAnData();
@@ -344,9 +328,9 @@ else
                     Organization = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Organization,
                     Value_string = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Value_string,
                     Unit = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Unit,
-                    DisplayBS = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Display,
+                    
                     Location = BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Location,
-
+                    DisplayBS = be.Code == "SIG_10" ? "nhóm máu" : BacSis?.FirstOrDefault(bs => bs.Code == be.Code)?.Display, 
                 }));
         }
 

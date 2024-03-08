@@ -1,11 +1,13 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddRadzenComponents();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<HttpClient>(s =>
 {
